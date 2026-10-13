@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reservas de Hotel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="marca">
+        <span class="logo">H</span>
+        <div>
+            <h2>Hotel</h2>
+            <p>Sistema de reservas</p>
+        </div>
+    </div>
+
+    <nav>
+        <button class="nav activo" data-vista="inicio">Inicio</button>
+        <button class="nav" data-vista="habitaciones">Habitaciones</button>
+        <button class="nav" data-vista="huespedes">Huéspedes</button>
+        <button class="nav" data-vista="reservas">Reservas</button>
+        <button class="nav" data-vista="pagos">Pagos</button>
+        <button class="nav" data-vista="reportes">Reportes</button>
+    </nav>
+</aside>
+
+<main class="contenido">
+    <section class="encabezado">
+        <div>
+            <p>Panel administrativo</p>
+            <strong>Gestión de reservas para hoteles</strong>
+        </div>
+        <span class="estado-sistema">Sistema activo</span>
+    </section>
+
+    <section id="inicio" class="vista activa">
+        <div class="titulo-vista">
+            <div>
+                <h1>Sistema de Gestión de Reservas de Hotel</h1>
+                <p class="descripcion">
+                    Sistema web para registrar habitaciones, huéspedes, reservas, pagos y reportes de cualquier hotel.
+                </p>
+            </div>
+        </div>
+
+        <div class="tarjetas">
+            <div class="tarjeta">
+                <span>Habitaciones</span>
+                <p id="totalHabitaciones">0</p>
+                <small>Registradas en el sistema</small>
+            </div>
+            <div class="tarjeta">
+                <span>Huéspedes</span>
+                <p id="totalHuespedes">0</p>
+                <small>Clientes registrados</small>
+            </div>
+            <div class="tarjeta">
+                <span>Reservas</span>
+                <p id="totalReservas">0</p>
+                <small>Reservas generadas</small>
+            </div>
+            <div class="tarjeta">
+                <span>Ingresos</span>
+                <p id="ingresosInicio">S/ 0</p>
+                <small>Pagos registrados</small>
+            </div>
+        </div>
+
+        <div class="grid-doble">
+            <div class="panel">
+                <h2>Estado del hotel</h2>
+                <div class="resumen">
+                    <span id="resumenDisponibles">Disponibles: 0</span>
+                    <span id="resumenOcupadas">Ocupadas: 0</span>
+                    <span id="resumenMantenimiento">Mantenimiento: 0</span>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Accesos rápidos</h2>
+                <div class="acciones-rapidas">
+                    <button type="button" data-ir="habitaciones">Nueva habitación</button>
+                    <button type="button" data-ir="huespedes">Nuevo huésped</button>
+                    <button type="button" data-ir="reservas">Nueva reserva</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Últimas reservas</h2>
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Huésped</th>
+                            <th>Habitación</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaUltimasReservas"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="habitaciones" class="vista">
+        <div class="titulo-vista">
+            <div>
+                <h1>Gestión de habitaciones</h1>
+                <p class="descripcion">Aquí se registran las habitaciones con su tipo, precio, capacidad y estado.</p>
+            </div>
+        </div>
+
+        <form id="formHabitacion" class="formulario">
+            <input type="text" id="numeroHabitacion" placeholder="Número de habitación" required>
+            <select id="tipoHabitacion" required>
+                <option value="">Tipo de habitación</option>
+                <option value="Simple">Simple</option>
+                <option value="Doble">Doble</option>
+                <option value="Matrimonial">Matrimonial</option>
+                <option value="Suite">Suite</option>
+            </select>
+            <input type="text" id="pisoHabitacion" placeholder="Piso" required>
+            <input type="number" id="capacidadHabitacion" placeholder="Capacidad de personas" min="1" required>
+            <input type="number" id="precioHabitacion" placeholder="Precio por noche" min="1" required>
+            <select id="estadoHabitacion" required>
+                <option value="Disponible">Disponible</option>
+                <option value="Ocupada">Ocupada</option>
+                <option value="Mantenimiento">Mantenimiento</option>
+            </select>
+            <textarea id="descripcionHabitacion" placeholder="Descripción de la habitación" required></textarea>
+            <button type="submit">Guardar habitación</button>
+        </form>
+
+        <h2>Habitaciones registradas</h2>
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                        <th>Tipo</th>
+                        <th>Piso</th>
+                        <th>Capacidad</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                        <th>Descripción</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaHabitaciones"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="huespedes" class="vista">
+        <div class="titulo-vista">
+            <div>
+                <h1>Gestión de huéspedes</h1>
+                <p class="descripcion">Aquí se guardan los datos principales de cada huésped.</p>
+            </div>
+        </div>
+
+        <form id="formHuesped" class="formulario">
+            <input type="text" id="dniHuesped" placeholder="DNI" required>
+            <input type="text" id="nombreHuesped" placeholder="Nombre completo" required>
+            <input type="text" id="telefonoHuesped" placeholder="Teléfono" required>
+            <input type="email" id="correoHuesped" placeholder="Correo electrónico" required>
+            <input type="text" id="direccionHuesped" placeholder="Dirección" required>
+            <button type="submit">Guardar huésped</button>
+        </form>
+
+        <h2>Huéspedes registrados</h2>
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>DNI</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Dirección</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaHuespedes"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="reservas" class="vista">
+        <div class="titulo-vista">
+            <div>
+                <h1>Gestión de reservas</h1>
+                <p class="descripcion">Aquí se registran las reservas y se calcula el total según las noches de hospedaje.</p>
+            </div>
+        </div>
+
+        <p id="mensajeReserva" class="mensaje oculto"></p>
+
+        <form id="formReserva" class="formulario">
+            <select id="huespedReserva" required></select>
+            <select id="habitacionReserva" required></select>
+            <input type="date" id="entradaReserva" required>
+            <input type="date" id="salidaReserva" required>
+            <button type="submit">Guardar reserva</button>
+        </form>
+
+        <h2>Reservas registradas</h2>
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Huésped</th>
+                        <th>Habitación</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                        <th>Noches</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReservas"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="pagos" class="vista">
+        <div class="titulo-vista">
+            <div>
+                <h1>Gestión de pagos</h1>
+                <p class="descripcion">Aquí se registran los pagos realizados por los huéspedes.</p>
+            </div>
+        </div>
+
+        <form id="formPago" class="formulario">
+            <select id="reservaPago" required></select>
+            <input type="number" id="montoPago" placeholder="Monto pagado" min="1" required>
+            <select id="metodoPago" required>
+                <option value="">Método de pago</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Yape">Yape</option>
+                <option value="Transferencia">Transferencia</option>
+            </select>
+            <input type="date" id="fechaPago" required>
+            <textarea id="observacionPago" placeholder="Observación del pago" required></textarea>
+            <button type="submit">Guardar pago</button>
+        </form>
+
+        <h2>Pagos registrados</h2>
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Reserva</th>
+                        <th>Monto</th>
+                        <th>Método</th>
+                        <th>Fecha</th>
+                        <th>Observación</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaPagos"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="reportes" class="vista">
+        <div class="titulo-vista">
+            <div>
+                <h1>Reportes del sistema</h1>
+                <p class="descripcion">Aquí se muestra el resumen general de habitaciones, reservas y pagos.</p>
+            </div>
+        </div>
+
+        <div class="tarjetas">
+            <div class="tarjeta">
+                <span>Disponibles</span>
+                <p id="reporteDisponibles">0</p>
+                <small>Habitaciones listas</small>
+            </div>
+            <div class="tarjeta">
+                <span>Ocupadas</span>
+                <p id="reporteOcupadas">0</p>
+                <small>Habitaciones en uso</small>
+            </div>
+            <div class="tarjeta">
+                <span>Mantenimiento</span>
+                <p id="reporteMantenimiento">0</p>
+                <small>No disponibles</small>
+            </div>
+            <div class="tarjeta">
+                <span>Ingresos</span>
+                <p id="reporteIngresos">S/ 0</p>
+                <small>Total pagado</small>
+            </div>
+        </div>
+
+        <h2>Resumen de reservas</h2>
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Huésped</th>
+                        <th>Habitación</th>
+                        <th>Noches</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReporteReservas"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
